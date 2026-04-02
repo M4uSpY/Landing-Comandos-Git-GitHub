@@ -1,95 +1,661 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guía Git Profesional | Flujo Interactivo</title>
+    <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Document</title>
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Custom animations and particle canvas styling */
+      @keyframes float {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-8px) rotate(2deg);
+        }
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+      }
+
+      @keyframes pulse-glow {
+        0% {
+          box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+        }
+      }
+
+      @keyframes border-flow {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      .animate-pulse-glow {
+        animation: pulse-glow 2s infinite;
+      }
+
+      .card-hover {
+        transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      }
+
+      .card-hover:hover {
+        transform: translateY(-6px);
+        border-color: rgba(99, 102, 241, 0.6);
+        box-shadow:
+          0 20px 25px -12px rgba(0, 0, 0, 0.5),
+          0 0 0 1px rgba(99, 102, 241, 0.3);
+      }
+
+      .gradient-border {
+        background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6, #818cf8);
+        background-size: 300% 100%;
+        animation: border-flow 4s ease infinite;
+      }
+
+      /* Particle canvas style */
+      #particle-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #4f46e5;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6366f1;
+      }
+
+      /* Typing effect for code blocks */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .code-block {
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+    </style>
   </head>
-  <body class="bg-slate-900 text-slate-200 p-4">
-    <main class="max-w-3xl mx-auto">
-      <div class="bg-slate-800/40 border border-slate-700 rounded-xl p-5 mb-6">
-        <div
-          class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-3"
-        >
-          01
+  <body
+    class="bg-gradient-to-br from-slate-950 via-indigo-950/30 to-slate-950 text-slate-200 relative overflow-x-hidden"
+  >
+    <!-- Canvas de partículas dinámicas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Contenido principal con z-index relativo -->
+    <main class="relative z-10 max-w-4xl mx-auto px-6 py-10 backdrop-blur-sm">
+      <!-- HEADER con animación y glitch suave -->
+      <header class="mb-12 text-center">
+        <div class="inline-block relative mb-2">
+          <div
+            class="absolute inset-0 bg-indigo-500 blur-2xl opacity-20 rounded-full"
+          ></div>
+          <h1
+            class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight animate-float"
+          >
+            🚀 Guía Básica de Git & GitHub
+          </h1>
         </div>
-        <h3 class="font-bold text-white uppercase text-xs">
-          Inicializar proyecto
-        </h3>
+        <div class="flex items-center justify-center gap-2 mt-3">
+          <div
+            class="h-px w-12 bg-gradient-to-r from-transparent to-indigo-500"
+          ></div>
+          <p class="text-slate-300 text-sm font-medium tracking-wide">
+            <i class="fas fa-code-branch mr-1 text-indigo-400"></i> Flujo
+            profesional para iniciar y subir proyectos
+          </p>
+          <div
+            class="h-px w-12 bg-gradient-to-l from-transparent to-indigo-500"
+          ></div>
+        </div>
+        <!-- badge animado -->
+        <div class="mt-4 flex justify-center gap-3 flex-wrap">
+          <span
+            class="text-xs bg-slate-800/60 backdrop-blur-sm px-3 py-1 rounded-full border border-indigo-500/40 text-indigo-300"
+          >
+            <i class="fas fa-terminal mr-1"></i> Command Line
+          </span>
+          <span
+            class="text-xs bg-slate-800/60 backdrop-blur-sm px-3 py-1 rounded-full border border-purple-500/40 text-purple-300"
+          >
+            <i class="fab fa-github mr-1"></i> GitHub Flow
+          </span>
+          <span
+            class="text-xs bg-slate-800/60 backdrop-blur-sm px-3 py-1 rounded-full border border-emerald-500/40 text-emerald-300"
+          >
+            <i class="fas fa-rocket mr-1"></i> Best Practices
+          </span>
+        </div>
+      </header>
+
+      <!-- CONTENEDOR con efecto de gradiente sutil al pasar -->
+      <section class="space-y-7">
+        <!-- STEP 01 - Inicializar proyecto -->
         <div
-          class="bg-black/60 p-4 rounded font-mono text-emerald-400 text-sm border-l-4 border-indigo-500 mt-3"
+          class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-2xl p-6 shadow-xl card-hover transition-all duration-300"
         >
-          mkdir proyecto-git<br />
-          cd proyecto-git <br />
-          git init
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-indigo-500 rounded-full blur-md opacity-50"
+              ></div>
+              <span
+                class="relative bg-gradient-to-br from-indigo-600 to-indigo-800 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+              >
+                01
+              </span>
+            </div>
+            <h2 class="font-bold text-xl text-white flex items-center gap-2">
+              <i class="fas fa-folder-open text-indigo-400"></i> Inicializar
+              proyecto
+            </h2>
+          </div>
+          <div
+            class="code-block bg-black/80 p-4 rounded-xl font-mono text-emerald-400 text-sm border-l-4 border-indigo-500 overflow-x-auto"
+          >
+            <span class="text-slate-400"># Crear carpeta y entrar</span><br />
+            mkdir proyecto-git <br />
+            cd proyecto-git <br />
+            <span class="text-slate-400"># Inicializar repositorio Git</span
+            ><br />
+            git init
+          </div>
+          <div class="mt-3 text-xs text-slate-400 flex items-center gap-2">
+            <i class="fas fa-info-circle text-indigo-400"></i> Se crea la
+            carpeta oculta .git con toda la configuración
+          </div>
+        </div>
+
+        <!-- STEP 02 - Primer commit local -->
+        <div
+          class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-2xl p-6 shadow-xl card-hover transition-all duration-300"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-indigo-500 rounded-full blur-md opacity-50"
+              ></div>
+              <span
+                class="relative bg-gradient-to-br from-indigo-600 to-indigo-800 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+              >
+                02
+              </span>
+            </div>
+            <h2 class="font-bold text-xl text-white flex items-center gap-2">
+              <i class="fas fa-code-commit text-indigo-400"></i> Primer commit
+              local
+            </h2>
+          </div>
+          <div
+            class="code-block bg-black/80 p-4 rounded-xl font-mono text-emerald-400 text-sm border-l-4 border-indigo-500 overflow-x-auto"
+          >
+            git add . <br />
+            git commit -m "proyecto base" <br />
+            git status
+          </div>
+          <div class="mt-3 flex gap-4 text-xs text-slate-400">
+            <span
+              ><i class="fas fa-check-circle text-green-500"></i> Añade todos
+              los archivos al staging</span
+            >
+            <span
+              ><i class="fas fa-save text-blue-400"></i> Crea punto de
+              control</span
+            >
+          </div>
+        </div>
+
+        <!-- STEP 03 - Crear repositorio en GitHub (destacado con efecto neón) -->
+        <div class="relative group">
+          <div
+            class="absolute -inset-0.5 gradient-border rounded-2xl blur-sm opacity-60 group-hover:opacity-100 transition duration-500"
+          ></div>
+          <div
+            class="relative bg-amber-900/20 backdrop-blur-sm border border-amber-500/50 rounded-2xl p-6 shadow-xl transition-all duration-300"
+          >
+            <div class="flex items-center gap-4 mb-2">
+              <div class="relative">
+                <div
+                  class="absolute inset-0 bg-amber-500 rounded-full blur-md animate-pulse"
+                ></div>
+                <span
+                  class="relative bg-gradient-to-br from-amber-600 to-orange-600 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+                >
+                  03
+                </span>
+              </div>
+              <h2
+                class="font-bold text-xl text-amber-400 flex items-center gap-2"
+              >
+                <i class="fab fa-github-alt text-amber-400"></i> Crear
+                repositorio en GitHub
+              </h2>
+            </div>
+            <p class="text-sm text-slate-300 ml-14 mb-3 leading-relaxed">
+              <i class="fas fa-external-link-alt text-amber-400 mr-1"></i>
+              Crea un repositorio remoto desde GitHub
+              <strong class="text-amber-300"
+                >(sin README, .gitignore ni licencia)</strong
+              >
+              si ya tienes un proyecto local.
+            </p>
+            <div
+              class="bg-black/60 p-3 rounded-lg text-xs font-mono text-amber-300/90 border border-amber-500/30"
+            >
+              <i class="fab fa-github mr-2"></i> → New repository → Nombra tu
+              repositorio → Create repository
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 04 - Vincular repositorio remoto -->
+        <div
+          class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-2xl p-6 shadow-xl card-hover transition-all duration-300"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-indigo-500 rounded-full blur-md opacity-50"
+              ></div>
+              <span
+                class="relative bg-gradient-to-br from-indigo-600 to-indigo-800 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+              >
+                04
+              </span>
+            </div>
+            <h2 class="font-bold text-xl text-white flex items-center gap-2">
+              <i class="fas fa-link text-indigo-400"></i> Vincular repositorio
+              remoto
+            </h2>
+          </div>
+          <div
+            class="code-block bg-black/80 p-4 rounded-xl font-mono text-indigo-300 text-sm border-l-4 border-indigo-500 overflow-x-auto"
+          >
+            git remote add origin
+            <span class="text-white bg-slate-800/60 px-2 py-0.5 rounded"
+              >https://github.com/tuusuario/repo.git</span
+            >
+          </div>
+          <div class="mt-3 text-xs text-slate-400 flex items-center gap-2">
+            <i class="fas fa-plug text-indigo-400"></i> Conecta el repositorio
+            local con el remoto (origin)
+          </div>
+        </div>
+
+        <!-- STEP 05 - Primer push -->
+        <div
+          class="bg-slate-900/80 backdrop-blur-sm border border-slate-700/80 rounded-2xl p-6 shadow-xl card-hover transition-all duration-300"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-indigo-500 rounded-full blur-md opacity-50"
+              ></div>
+              <span
+                class="relative bg-gradient-to-br from-indigo-600 to-indigo-800 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+              >
+                05
+              </span>
+            </div>
+            <h2 class="font-bold text-xl text-white flex items-center gap-2">
+              <i class="fas fa-upload text-indigo-400"></i> Primer push
+            </h2>
+          </div>
+          <div
+            class="code-block bg-black/80 p-4 rounded-xl font-mono text-indigo-300 text-sm border-l-4 border-indigo-500 overflow-x-auto"
+          >
+            git push -u origin master
+          </div>
+          <div class="mt-3 text-xs text-slate-400 flex flex-wrap gap-x-4">
+            <span
+              ><i class="fas fa-flag-checkered text-green-400"></i> -u establece
+              seguimiento upstream</span
+            >
+            <span
+              ><i class="fas fa-code-branch text-blue-400"></i> Sube la rama
+              master a origin</span
+            >
+          </div>
+        </div>
+
+        <!-- STEP 06 - Actualizaciones posteriores con efecto dinámico -->
+        <div
+          class="bg-gradient-to-r from-slate-900/90 to-indigo-950/50 backdrop-blur-sm border border-green-500/40 rounded-2xl p-6 shadow-xl card-hover transition-all duration-300"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div class="relative">
+              <div
+                class="absolute inset-0 bg-green-500 rounded-full blur-md animate-pulse-glow"
+              ></div>
+              <span
+                class="relative bg-gradient-to-br from-green-600 to-emerald-700 w-11 h-11 flex items-center justify-center rounded-full font-bold shadow-lg"
+              >
+                <i class="fas fa-sync-alt"></i>
+              </span>
+            </div>
+            <h2 class="font-bold text-xl text-white flex items-center gap-2">
+              <i class="fas fa-cloud-upload-alt text-green-400"></i>
+              Actualizaciones posteriores
+            </h2>
+          </div>
+          <div
+            class="code-block bg-black/80 p-4 rounded-xl font-mono text-emerald-400 text-sm border-l-4 border-green-500 overflow-x-auto"
+          >
+            git add . <br />
+            git commit -m "MENSAJE DESCRIPTIVO" <br />
+            git push origin master
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-xs text-emerald-300/80">
+            <i class="fas fa-infinity"></i> Flujo diario: add → commit → push
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección extra: consejos profesionales con iconos animados -->
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div
+          class="bg-slate-800/40 backdrop-blur-sm rounded-xl p-4 border border-slate-700/60 text-center hover:bg-slate-800/60 transition"
+        >
+          <i class="fas fa-code-branch text-indigo-400 text-2xl mb-2 block"></i>
+          <h3 class="font-semibold text-sm">Ramas (Branches)</h3>
+          <p class="text-xs text-slate-400">
+            Usa <code class="text-indigo-300">git branch feature</code> para
+            aislar cambios
+          </p>
+        </div>
+        <div
+          class="bg-slate-800/40 backdrop-blur-sm rounded-xl p-4 border border-slate-700/60 text-center hover:bg-slate-800/60 transition"
+        >
+          <i class="fas fa-history text-purple-400 text-2xl mb-2 block"></i>
+          <h3 class="font-semibold text-sm">Historial limpio</h3>
+          <p class="text-xs text-slate-400">
+            Commits atómicos y mensajes claros
+          </p>
+        </div>
+        <div
+          class="bg-slate-800/40 backdrop-blur-sm rounded-xl p-4 border border-slate-700/60 text-center hover:bg-slate-800/60 transition"
+        >
+          <i class="fas fa-tools text-emerald-400 text-2xl mb-2 block"></i>
+          <h3 class="font-semibold text-sm">Git status & log</h3>
+          <p class="text-xs text-slate-400">Revisa antes de cada push</p>
         </div>
       </div>
 
-      <div class="bg-slate-800/40 border border-slate-700 rounded-xl p-5 mb-6">
-        <div
-          class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-3"
-        >
-          02
-        </div>
-        <h3 class="font-bold text-white uppercase text-xs">
-          Primer commit local
-        </h3>
-        <div
-          class="bg-black/60 p-4 rounded font-mono text-emerald-400 text-sm border-l-4 border-indigo-500 mt-3"
-        >
-          git add .<br />
-          git commit -m "proyecto base"<br />
-          git status
-        </div>
-      </div>
-
-      <div
-        class="bg-slate-800/40 border border-dashed border-amber-500 rounded-xl p-5 mb-6"
+      <!-- FOOTER con firma animada -->
+      <footer
+        class="text-center mt-12 pt-6 border-t border-slate-800/50 relative"
       >
-        <div
-          class="bg-amber-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-3"
-        >
-          03
+        <div class="flex justify-center gap-2 text-xs text-slate-500">
+          <span
+            class="w-8 h-px bg-indigo-500/50 inline-block self-center"
+          ></span>
+          <span class="tracking-wider font-mono text-white">
+            <i class="fas fa-terminal mr-1"></i> MAURICIO ALDUNATE DE LA BARRA
+          </span>
+          <span
+            class="w-8 h-px bg-indigo-500/50 inline-block self-center"
+          ></span>
         </div>
-        <h3 class="font-bold text-amber-400 uppercase text-xs italic">
-          crear repositorio en github
-        </h3>
-        <p class="text-slate-500 text-[11px] mt-1 italic">
-          Crear un repositorio remoto en GitHub
-        </p>
-      </div>
-
-      <div class="bg-slate-800/40 border border-slate-700 rounded-xl p-5 mb-6">
-        <div
-          class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-3"
-        >
-          04
+        <div class="mt-3 flex justify-center gap-4 text-white text-xs">
+          <span><i class="fab fa-git-alt"></i> Git v2.40+</span>
+          <span><i class="fas fa-shield-alt"></i> Flujo profesional</span>
         </div>
-        <h3 class="font-bold text-white uppercase text-xs">
-          vincular con la nube (github)
-        </h3>
-        <div
-          class="bg-black/60 p-4 rounded font-mono text-indigo-300 text-sm border-l-4 border-indigo-400 mt-3"
-        >
-          git remote add origin
-          <span class="text-white">URL_REPOSITORIO_REMOTO</span>
-        </div>
-      </div>
-
-      <div class="bg-slate-800/40 border border-slate-700 rounded-xl p-5 mb-6">
-        <div
-          class="bg-indigo-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mb-3"
-        >
-          05
-        </div>
-        <h3 class="font-bold text-white uppercase text-xs">El gran push</h3>
-        <div
-          class="bg-black/60 p-4 rounded font-mono text-indigo-300 text-sm border-l-4 border-white-400 mt-3"
-        >
-          git push -u origin master
-        </div>
-      </div>
+      </footer>
     </main>
+
+    <script>
+      // === SISTEMA DE PARTÍCULAS DINÁMICAS ===
+      const canvas = document.getElementById("particle-canvas");
+      let ctx = canvas.getContext("2d");
+      let particles = [];
+      let particleCount = 80;
+      let mouseX = null,
+        mouseY = null;
+      let animationFrameId;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2.5 + 0.8;
+          this.speedX = (Math.random() - 0.5) * 0.4;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.color = `rgba(${100 + Math.random() * 80}, ${100 + Math.random() * 80}, 255, ${Math.random() * 0.5 + 0.2})`;
+          this.originalSpeedX = this.speedX;
+          this.originalSpeedY = this.speedY;
+        }
+
+        update() {
+          // efecto mouse repel
+          if (mouseX !== null && mouseY !== null) {
+            let dx = this.x - mouseX;
+            let dy = this.y - mouseY;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 120) {
+              let angle = Math.atan2(dy, dx);
+              let force = (120 - distance) / 120;
+              let pushX = Math.cos(angle) * force * 1.2;
+              let pushY = Math.sin(angle) * force * 1.2;
+              this.x += pushX;
+              this.y += pushY;
+            }
+          }
+
+          this.x += this.speedX;
+          this.y += this.speedY;
+
+          // bordes con rebote suave
+          if (this.x < 0) {
+            this.x = 0;
+            this.speedX = -this.speedX;
+          }
+          if (this.x > canvas.width) {
+            this.x = canvas.width;
+            this.speedX = -this.speedX;
+          }
+          if (this.y < 0) {
+            this.y = 0;
+            this.speedY = -this.speedY;
+          }
+          if (this.y > canvas.height) {
+            this.y = canvas.height;
+            this.speedY = -this.speedY;
+          }
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = "rgba(79, 70, 229, 0.5)";
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      function animateParticles() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "source-over";
+        // fondo transparente con ligero rastro (efecto estela)
+        ctx.fillStyle = "rgba(2, 6, 23, 0.1)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let p of particles) {
+          p.update();
+          p.draw();
+        }
+
+        // dibujar conexiones entre partículas cercanas
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(99, 102, 241, 0.2)";
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(139, 92, 246, ${0.15 * (1 - distance / 100)})`;
+              ctx.stroke();
+            }
+          }
+        }
+        animationFrameId = requestAnimationFrame(animateParticles);
+      }
+
+      function onMouseMove(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        setTimeout(() => {
+          mouseX = null;
+          mouseY = null;
+        }, 100);
+      }
+
+      function onTouchMove(e) {
+        if (e.touches.length) {
+          mouseX = e.touches[0].clientX;
+          mouseY = e.touches[0].clientY;
+          setTimeout(() => {
+            mouseX = null;
+            mouseY = null;
+          }, 100);
+        }
+      }
+
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles();
+      });
+
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("touchmove", onTouchMove);
+
+      resizeCanvas();
+      initParticles();
+      animateParticles();
+
+      // efecto sutil de brillo en los bloques de código al copiar
+      const codeBlocks = document.querySelectorAll(".code-block");
+      codeBlocks.forEach((block) => {
+        block.addEventListener("click", () => {
+          const text = block.innerText;
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              const originalTransition = block.style.transition;
+              block.style.transition = "0.1s";
+              block.style.backgroundColor = "rgba(79, 70, 229, 0.3)";
+              setTimeout(() => {
+                block.style.backgroundColor = "";
+                block.style.transition = originalTransition;
+              }, 200);
+              // pequeño tooltip visual
+              const toast = document.createElement("div");
+              toast.innerText = "📋 Comando copiado!";
+              toast.className =
+                "fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-indigo-700 text-white text-xs py-2 px-4 rounded-full shadow-lg z-50 backdrop-blur";
+              document.body.appendChild(toast);
+              setTimeout(() => toast.remove(), 1500);
+            })
+            .catch(() => {});
+        });
+      });
+
+      // efecto de entrada progresiva con scroll reveal simple
+      const cards = document.querySelectorAll(
+        ".bg-slate-900\\/80, .relative.group, .bg-gradient-to-r",
+      );
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+
+      cards.forEach((card) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(card);
+      });
+
+      // forzar visibilidad después de un pequeño delay
+      setTimeout(() => {
+        cards.forEach((card) => {
+          card.style.opacity = "1";
+          card.style.transform = "translateY(0)";
+        });
+      }, 200);
+    </script>
   </body>
 </html>
